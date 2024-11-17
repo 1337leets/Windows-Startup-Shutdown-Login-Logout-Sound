@@ -1,0 +1,1 @@
+powershell.exe -c (New-Object Media.SoundPlayer 'C:\WindowsSounds\SoundFiles\Logon.wav').PlaySync();
