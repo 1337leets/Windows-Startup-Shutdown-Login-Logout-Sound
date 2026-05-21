@@ -1,18 +1,26 @@
 Made by 1337leets
 
+--- Quick Start (GUI) ---
+
 1. Place the WindowsSounds folder in C:\
 
-2. Go to Group Policy Management Editor (you can press Win+R then type gpedit.msc and run) 
+2. Right-click WindowsSoundManager.ps1 and choose "Run with PowerShell"
+   (It will ask for admin permission - this is required to register the sounds.)
 
-3.1. If you want to add Startup/Shutdown sounds go to Computer Configuration>Windows Settings>Scripts (Startup/Shutdown) and add the scripts inside the SciptFiles folder.
+3. Use the Browse buttons to pick a WAV file for each event (Startup, Shutdown, Logon, Logoff).
 
-3.2. If you want to add Login/Logoff sounds go to User Configuration>Windows Settings>Scripts (Login/Logoff) and add the scripts inside the SciptFiles folder.
+4. Click Apply. The sounds are copied to C:\WindowsSounds\SoundFiles\ and registered
+   automatically via Windows Task Scheduler. No manual gpedit.msc steps needed.
 
+5. To remove a sound, click the X button next to it and press Apply.
 
+--- Notes ---
 
-If you want to change the sounds go to C:\WindowsSounds\SoundFiles and make sure it's in .wav format and has the same name as the original file. 
-
-Otherwise you can edit the script files on C:\WindowsSounds\ScriptFiles and edit the Powershell scripts as:
-
-powershell.exe -c (New-Object Media.SoundPlayer 'location of your file').PlaySync();
+- Only WAV files are supported.
+- The GUI saves your selections to C:\WindowsSounds\config.json.
+- Task Scheduler tasks are named: WindowsSounds_Startup, WindowsSounds_Shutdown,
+  WindowsSounds_Logon, WindowsSounds_Logoff.
+- Startup/Shutdown tasks run as SYSTEM. Logon/Logoff tasks run as the current user.
+- Shutdown sound fires when Windows begins shutting down (Event ID 1074).
+  On very fast shutdowns the sound may be cut short.
 
