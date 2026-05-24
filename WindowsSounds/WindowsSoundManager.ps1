@@ -203,7 +203,10 @@ function Invoke-Apply ([hashtable]$rows, [PSCustomObject]$cfg,
                 foreach ($dir in @($script:SOUND_FILES, $script:SCRIPT_FILES)) {
                     if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir | Out-Null }
                 }
-                Copy-Item -Path $sourcePath -Destination "$script:SOUND_FILES\$eventName.wav" -Force
+                $dest = "$script:SOUND_FILES\$eventName.wav"
+                if ([System.IO.Path]::GetFullPath($sourcePath) -ne [System.IO.Path]::GetFullPath($dest)) {
+                    Copy-Item -Path $sourcePath -Destination $dest -Force
+                }
                 $scriptPath = Write-PlayScript -EventName $eventName
                 Register-SoundTask -EventName $eventName -ScriptPath $scriptPath
                 $cfg.$eventName.SourcePath = $sourcePath
